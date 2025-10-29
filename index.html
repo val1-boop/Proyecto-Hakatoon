@@ -1,48 +1,37 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>EduToken - Inicio</title>
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-   <header>
-    <h1>EduToken</h1>
-    <p>Aprende, gana tokens y desbloquea tu futuro</p>
-    <button onclick="logout()">Cerrar sesión</button>
+  <header class="main-header">
+    <div class="header-left">
+      <h1>EduToken</h1>
+      <p class="tagline">Aprende, gana tokens y desbloquea tu futuro</p>
+    </div>
 
-</header>
+    <div class="header-right">
+      <div id="user-display" class="user-display">Invitado</div>
+      <nav class="header-nav">
+        <a href="dashboard.html">Dashboard</a>
+      </nav>
+      <button class="btn-logout" onclick="logout()">Cerrar sesión</button>
+    </div>
+  </header>
 
   <main>
-    <section id="token-section">
+    <section id="token-section" class="card centered-card">
       <h2>Saldo de tokens</h2>
       <p id="balance">0 tokens</p>
-      <button id="earnBtn">Completar reto</button>
+      <button id="earnBtn" class="btn-primary">Completar reto</button>
     </section>
 
-    <section id="courses">
+    <section id="courses" class="courses-section">
       <h2>Cursos disponibles</h2>
-      <div class="course-card">
-        <h3>Introducción a la Programación</h3>
-        <p>Completa este curso y gana 10 tokens</p>
-        <button class="start-btn">Iniciar curso</button>
-      </div>
-      <div class="course-card">
-        <h3>Introducción a la Ciberseguridad</h3>
-        <p>Completa este curso y gana 12 tokens</p>
-        <button class="start-btn">Iniciar curso</button>
-      </div>
-      <div class="course-card">
-        <h3>Matemáticas Avanzadas</h3>
-        <p>Completa este curso y gana 8 tokens</p>
-        <button class="start-btn">Iniciar curso</button>
-      </div>
-      <div class="course-card">
-        <h3>Literarura</h3>
-        <p>Completa este curso y gana 8 tokens</p>
-        <button class="start-btn">Iniciar curso</button>
-      </div>
+      <div id="courses-container"></div> <!-- Aquí inyectaremos las tarjetas -->
     </section>
   </main>
 
@@ -50,7 +39,28 @@
     <p>© 2025 EduToken | Plataforma educativa descentralizada</p>
   </footer>
 
+  <!-- Modal de información del curso (oculto por defecto) -->
+  <div id="courseModal" class="modal" aria-hidden="true">
+    <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <button id="closeModal" class="modal-close" aria-label="Cerrar ventana">✕</button>
+      <h2 id="modal-title">Título del curso</h2>
+      <p id="modal-intro">Introducción del curso...</p>
+
+      <div id="modal-modules">
+        <h3>Módulos</h3>
+        <ul id="modal-modules-list"></ul>
+      </div>
+
+      <div class="modal-actions">
+        <button id="modal-start" class="btn-primary">Iniciar curso</button>
+        <button id="modal-close-secondary" class="btn-outline">Cerrar</button>
+      </div>
+    </div>
+    <div class="modal-backdrop"></div>
+  </div>
+
+  <!-- Scripts: courses.js debe cargarse antes que app.js -->
+  <script src="js/courses.js"></script>
   <script src="js/app.js"></script>
- 
 </body>
 </html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>EduToken - Curso</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* Estilos rápidos específicos del curso (puedes mover a style.css) */
+    .course-container { max-width: 900px; margin: 30px auto; padding: 20px; background: #fff; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.08); }
+    .course-header { display:flex; justify-content:space-between; align-items:center; gap:20px; flex-wrap:wrap; }
+    .modules { margin-top:20px; text-align:left; }
+    .module { display:flex; justify-content:space-between; align-items:center; padding:12px; border-radius:8px; border:1px solid #E6E9EE; margin-bottom:10px; }
+    .module button { background:#3B82F6; color:white; border:none; padding:8px 12px; border-radius:8px; cursor:pointer; }
+    .back-btn { background:#111827; color:white; padding:8px 12px; border-radius:8px; border:none; cursor:pointer; }
+    .token-reward { font-weight:700; color:#FBBF24; }
+  </style>
+</head>
+<body>
+  <div class="course-container">
+    <div class="course-header">
+      <div>
+        <h1 id="course-title">Título del curso</h1>
+        <p id="course-intro">Introducción del curso...</p>
+      </div>
+      <div style="text-align:right;">
+        <p>Balance: <span id="user-balance">0</span> tokens</p>
+        <button class="back-btn" id="backDashboard">Regresar al dashboard</button>
+      </div>
+    </div>
+
+    <div class="modules">
+      <h3>Módulos</h3>
+      <div id="modules-list"></div>
+    </div>
+  </div>
+
+  <script src="courses.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

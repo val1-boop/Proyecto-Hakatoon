@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EduToken - Registrarse</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body class="login-body">
+
+  <div class="login-container">
+    <h1>🎓 EduToken</h1>
+    <h2>Crear cuenta</h2>
+
+    <form id="registerForm" novalidate>
+      <input type="text" id="fullName" placeholder="Nombre completo" required />
+      <input type="email" id="email" placeholder="Correo electrónico" required />
+      <input type="email" id="emailConfirm" placeholder="Confirmar correo" required />
+      <input type="password" id="passwordReg" placeholder="Contraseña (mín. 4 caracteres)" required />
+      <input type="password" id="passwordConfirm" placeholder="Confirmar contraseña" required />
+      <div class="register-actions">
+        <button type="submit" class="btn-primary">Registrar</button>
+        <a href="login.html" class="btn-outline">Volver al inicio</a>
+      </div>
+    </form>
+
+    <p id="register-error" class="error-small"></p>
+    <p id="register-success" class="success-small"></p>
+  </div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
