@@ -1,0 +1,202 @@
+body {
+  font-family: 'Poppins', sans-serif;
+  background: #F9FAFB;
+  color: #111827;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+header {
+  background-color: #3B82F6;
+  color: white;
+  padding: 30px 10px;
+  border-bottom: 4px solid #2563EB;
+}
+
+h1 {
+  margin: 0;
+  font-size: 2.5rem;
+}
+
+main {
+  padding: 40px;
+}
+
+#token-section {
+  background: #FFFFFF;
+  border-radius: 16px;
+  box-shadow: 0px 4px 12px rgba(0,0,0,0.1);
+  width: 80%;
+  max-width: 400px;
+  margin: 0 auto 40px;
+  padding: 20px;
+}
+
+button {
+  background-color: #10B981;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+button:hover {
+  background-color: #059669;
+}
+
+.course-card {
+  background: #FFFFFF;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  padding: 20px;
+  margin: 20px auto;
+  width: 80%;
+  max-width: 500px;
+  text-align: left;
+}
+
+footer {
+  background-color: #111827;
+  color: white;
+  padding: 20px;
+  margin-top: 40px;
+}
+
+/* ===== Dashboard ===== */
+nav {
+  margin-top: 10px;
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+  margin: 0 10px;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+nav a:hover {
+  color: #D1FAE5;
+}
+
+nav a.active {
+  text-decoration: underline;
+}
+
+#progress-section {
+  background: #FFFFFF;
+  border-radius: 16px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  padding: 30px;
+  margin: 40px auto;
+  width: 80%;
+  max-width: 500px;
+}
+
+.progress-bar {
+  width: 100%;
+  background-color: #E5E7EB;
+  border-radius: 10px;
+  height: 25px;
+  overflow: hidden;
+  margin-top: 10px;
+}
+
+#progress-fill {
+  height: 100%;
+  width: 0%;
+  background-color: #10B981;
+  transition: width 0.5s ease-in-out;
+}
+
+#achievements {
+  background: #FFFFFF;
+  border-radius: 16px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  padding: 30px;
+  margin: 40px auto;
+  width: 80%;
+  max-width: 500px;
+  text-align: left;
+}
+
+#achievement-list li {
+  margin-bottom: 8px;
+  font-size: 1.1rem;
+}
+
+
+
+/* ===== Login Page ===== */
+.login-body {
+  background: linear-gradient(135deg, #0F172A, #1E3A8A);
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.login-container {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+  width: 90%;
+  max-width: 400px;
+  text-align: center;
+  padding: 40px;
+}
+
+.login-container h1 {
+  color: #0F172A;
+  margin-bottom: 10px;
+}
+
+.login-container h2 {
+  color: #2563EB;
+  margin-bottom: 20px;
+}
+
+#loginForm {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+#loginForm input {
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #CBD5E1;
+  font-size: 1rem;
+  outline: none;
+}
+
+#loginForm input:focus {
+  border-color: #2563EB;
+  box-shadow: 0 0 5px rgba(37, 99, 235, 0.3);
+}
+
+.btn-primary {
+  background-color: #2563EB;
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.btn-primary:hover {
+  background-color: #1E40AF;
+}
+
+#error-msg {
+  color: red;
+  margin-top: 15px;
+  font-weight: bold;
+}
