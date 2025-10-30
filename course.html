@@ -64,15 +64,16 @@
         div.className = "module";
         div.innerHTML = `
           <span>${module.title} <span class="token-reward">+${module.tokens} tokens</span></span>
-          <button onclick="openModule('${module.id}')">Abrir módulo</button>
+          <button onclick="openModule('${module.id}')">Estudiar módulo</button>
         `;
         modulesList.appendChild(div);
       });
     });
 
     function openModule(moduleId) {
-      alert("Aquí puedes abrir el módulo " + moduleId + " (funcionalidad pendiente).");
-    }
+    const courseId = localStorage.getItem("selectedCourse");
+    window.location.href = `module.html?course=${courseId}&module=${moduleId}`;
+}
 
     document.getElementById("backDashboard").onclick = () => {
       window.location.href = "index.html";
