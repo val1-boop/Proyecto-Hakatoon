@@ -10,18 +10,17 @@
 <body>
   <header class="main-header">
     <div class="header-left">
-      <h1>EduToken</h1>
-      <p class="tagline">Aprende, completa retos y gana tokens 💡</p>
+        <h1>EduToken</h1>
+        <p class="tagline">Aprende, completa retos y gana tokens 💡</p>
     </div>
     <div class="header-right">
-      <div id="user-display" class="user-display">Invitado</div>
-      <nav class="header-nav">
-        <a href="dashboard.html">Avance</a>
-      </nav>
-      <button type="button" class="btn-logout" onclick="logout()">Cerrar sesión</button>
-
+        <div id="user-display" class="user-display">Cargando...</div>
+        <nav class="header-nav">
+            <a href="dashboard.html">Avance</a>
+        </nav>
+        <button type="button" class="btn-logout" id="logout-btn">Cerrar sesión</button>
     </div>
-  </header>
+</header>
 
   <main>
     <!-- Sección principal -->
@@ -104,5 +103,35 @@
       window.location.href = "course.html";
     }
   </script>
+  <script>
+    // Mostrar nombre del usuario logeado
+    document.addEventListener("DOMContentLoaded", function() {
+        const userDisplay = document.getElementById("user-display");
+        const loggedUser = localStorage.getItem("loggedIn");
+        
+        if (loggedUser) {
+            try {
+                const userObj = JSON.parse(loggedUser);
+                userDisplay.textContent = userObj.displayName || userObj.id || "Usuario";
+            } catch (e) {
+                userDisplay.textContent = loggedUser;
+            }
+        } else {
+            userDisplay.textContent = "Invitado";
+        }
+    });
+</script>
+<script>
+    document.getElementById('logout-btn').addEventListener('click', function() {
+        // Guardar progreso
+        if (typeof saveData === 'function') saveData();
+        
+        // Eliminar sesión
+        localStorage.removeItem('loggedIn');
+        
+        // Redirigir
+        window.location.href = 'login.html';
+    });
+</script>
 </body>
 </html>

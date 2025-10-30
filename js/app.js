@@ -155,20 +155,24 @@ function getLoggedUser() {
 })();
 
 
-/* ------------------ HEADER: mostrar usuario y cerrar sesión ------------------ */
-/* ------------------ CERRAR SESIÓN (opcional) - FIX ------------------ */
+/* ------------------ CERRAR SESIÓN (CORREGIDO) ------------------ */
 window.logout = function() {
-  try {
-    // Aseguramos guardar progreso/datos antes de cerrar (si existe la función)
-    if (typeof saveData === "function") saveData();
-  } catch (e) { /* no crítico */ }
-
-  // Eliminamos la sesión y redirigimos
+  // Guardar progreso antes de cerrar sesión
+  if (typeof saveData === "function") saveData();
+  
+  // Eliminar solo la sesión, mantener el progreso
   localStorage.removeItem("loggedIn");
-  // Si usas otros flags para sesión (por ejemplo: "sessionActive"), elimínalos aquí también.
-  // localStorage.removeItem("sessionActive");
+  
+  // Redirigir al login
   window.location.href = "login.html";
 };
+
+// Ejecutar cuando el DOM esté listo
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setupLogout);
+} else {
+    setupLogout();
+}
 
 
 /* ------------------ STORAGE: progreso por curso por usuario ------------------ */
