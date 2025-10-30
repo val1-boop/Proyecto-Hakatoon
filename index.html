@@ -1,66 +1,108 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>EduToken - Inicio</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EduToken - Cursos disponibles</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
   <header class="main-header">
     <div class="header-left">
       <h1>EduToken</h1>
-      <p class="tagline">Aprende, gana tokens y desbloquea tu futuro</p>
+      <p class="tagline">Aprende, completa retos y gana tokens 💡</p>
     </div>
-
     <div class="header-right">
       <div id="user-display" class="user-display">Invitado</div>
       <nav class="header-nav">
-        <a href="dashboard.html">Dashboard</a>
+        <a href="dashboard.html">Avance</a>
       </nav>
-      <button class="btn-logout" onclick="logout()">Cerrar sesión</button>
+      <button type="button" class="btn-logout" onclick="logout()">Cerrar sesión</button>
+
     </div>
   </header>
 
   <main>
-    <section id="token-section" class="card centered-card">
-      <h2>Saldo de tokens</h2>
-      <p id="balance">0 tokens</p>
-      <button id="earnBtn" class="btn-primary">Completar reto</button>
+    <!-- Sección principal -->
+    <section id="token-section" class="centered-card">
+      <h2>Tu progreso</h2>
+      <p>Balance actual: <strong id="balance">0 tokens</strong></p>
+      <p>Sigue aprendiendo para ganar más recompensas 🪙</p>
     </section>
 
-    <section id="courses" class="courses-section">
-      <h2>Cursos disponibles</h2>
-      <div id="courses-container"></div> <!-- Aquí inyectaremos las tarjetas -->
+    <!-- Sección de cursos -->
+    <section class="courses-section">
+      <h2 style="text-align:center; margin-bottom:24px;">🎓 Cursos disponibles</h2>
+      <div id="courses-container" class="courses-container"></div>
     </section>
   </main>
 
   <footer>
-    <p>© 2025 EduToken | Plataforma educativa descentralizada</p>
+    <p>EduToken © 2025 - Potenciando tu aprendizaje con recompensas digitales 🚀</p>
   </footer>
 
-  <!-- Modal de información del curso (oculto por defecto) -->
+  <!-- Modal para ver info de los cursos -->
   <div id="courseModal" class="modal" aria-hidden="true">
-    <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="modal-title">
-      <button id="closeModal" class="modal-close" aria-label="Cerrar ventana">✕</button>
+    <div class="modal-backdrop"></div>
+    <div class="modal-content">
+      <button id="closeModal" class="modal-close">&times;</button>
       <h2 id="modal-title">Título del curso</h2>
-      <p id="modal-intro">Introducción del curso...</p>
+      <p id="modal-intro"></p>
 
       <div id="modal-modules">
-        <h3>Módulos</h3>
+        <h3>Módulos incluidos:</h3>
         <ul id="modal-modules-list"></ul>
       </div>
 
       <div class="modal-actions">
-        <button id="modal-start" class="btn-primary">Iniciar curso</button>
         <button id="modal-close-secondary" class="btn-outline">Cerrar</button>
+        <button id="modal-start" class="btn-primary">Iniciar curso</button>
       </div>
     </div>
-    <div class="modal-backdrop"></div>
   </div>
 
-  <!-- Scripts: courses.js debe cargarse antes que app.js -->
   <script src="js/courses.js"></script>
-  <script src="js/app.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const coursesContainer = document.getElementById("courses-container");
+
+      window.courses.forEach(course => {
+        const card = document.createElement("div");
+        card.className = "course-card";
+        card.innerHTML = `
+          <h3>${course.title}</h3>
+          <p>${course.intro}</p>
+          <div class="course-actions">
+            <button class="btn-primary" onclick="viewInfo('${course.id}')">Ver info</button>
+            <button class="btn-outline" onclick="startCourse('${course.id}')">Iniciar curso</button>
+          </div>
+        `;
+        coursesContainer.appendChild(card);
+      });
+
+      document.getElementById("closeModal").onclick = closeModal;
+      document.getElementById("modal-close-secondary").onclick = closeModal;
+    });
+
+    function viewInfo(courseId) {
+      const course = window.courses.find(c => c.id === courseId);
+      document.getElementById("modal-title").innerText = course.title;
+      document.getElementById("modal-intro").innerText = course.intro;
+      document.getElementById("modal-modules-list").innerHTML =
+        course.modules.map(m => `<li>${m.title}</li>`).join("");
+      document.getElementById("courseModal").setAttribute("aria-hidden", "false");
+      document.getElementById("modal-start").onclick = () => startCourse(courseId);
+    }
+
+    function closeModal() {
+      document.getElementById("courseModal").setAttribute("aria-hidden", "true");
+    }
+
+    function startCourse(courseId) {
+      localStorage.setItem("selectedCourse", courseId);
+      window.location.href = "course.html";
+    }
+  </script>
 </body>
 </html>

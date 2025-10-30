@@ -291,3 +291,76 @@ footer {
   .main-header { padding:14px; }
   .header-right { gap:8px; }
 }
+
+/* ===========================================================
+   AJUSTE DE COLOR: Botones "Iniciar curso" y "Ver info"
+   =========================================================== */
+
+/* Afecta directamente a los botones dentro de las tarjetas de curso */
+.course-card button {
+  background-color: var(--primary);
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.15s ease;
+}
+
+/* Hover: azul más oscuro */
+.course-card button:hover {
+  background-color: var(--primary-dark);
+  transform: translateY(-2px);
+}
+
+/* Opcional: si quieres que "Ver info" sea ligeramente distinto (más claro) */
+.course-card button.btn-outline {
+  background-color: rgba(59, 130, 246, 0.15);
+  color: var(--primary-dark);
+  border: 1px solid var(--primary);
+}
+
+.course-card button.btn-outline:hover {
+  background-color: var(--primary);
+  color: white;
+}
+.course-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  padding: 16px;
+  margin-bottom: 20px;
+  text-align: left;
+  transition: transform 0.2s ease;
+}
+
+.course-card:hover {
+  transform: translateY(-3px);
+}
+
+.course-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.btn-primary {
+  background: #3B82F6;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.btn-outline {
+  background: transparent;
+  color: #3B82F6;
+  border: 2px solid #3B82F6;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+}

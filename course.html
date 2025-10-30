@@ -4,9 +4,8 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>EduToken - Curso</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="css/style.css" />
   <style>
-    /* Estilos rápidos específicos del curso (puedes mover a style.css) */
     .course-container { max-width: 900px; margin: 30px auto; padding: 20px; background: #fff; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.08); }
     .course-header { display:flex; justify-content:space-between; align-items:center; gap:20px; flex-wrap:wrap; }
     .modules { margin-top:20px; text-align:left; }
@@ -20,8 +19,8 @@
   <div class="course-container">
     <div class="course-header">
       <div>
-        <h1 id="course-title">Título del curso</h1>
-        <p id="course-intro">Introducción del curso...</p>
+        <h1 id="course-title"></h1>
+        <p id="course-intro"></p>
       </div>
       <div style="text-align:right;">
         <p>Balance: <span id="user-balance">0</span> tokens</p>
@@ -35,7 +34,49 @@
     </div>
   </div>
 
-  <script src="courses.js"></script>
-  <script src="app.js"></script>
+  <section id="ai-tutor" class="card" style="margin-top:18px;">
+    <h2>AI Tutor</h2>
+    <div id="ai-explanation" style="background:#F8FAFF; padding:12px; border-radius:8px; margin-bottom:10px;">
+      <strong>Explicación:</strong>
+      <p id="ai-expl-text">Selecciona un módulo y pulsa "Abrir AI Tutor" para comenzar.</p>
+    </div>
+  </section>
+
+  <script src="js/courses.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const courseId = localStorage.getItem("selectedCourse");
+      const course = window.courses.find(c => c.id === courseId);
+
+      if (!course) {
+        document.getElementById("course-title").innerText = "Curso no encontrado";
+        return;
+      }
+
+      document.getElementById("course-title").innerText = course.title;
+      document.getElementById("course-intro").innerText = course.intro;
+
+      const modulesList = document.getElementById("modules-list");
+      modulesList.innerHTML = "";
+
+      course.modules.forEach(module => {
+        const div = document.createElement("div");
+        div.className = "module";
+        div.innerHTML = `
+          <span>${module.title} <span class="token-reward">+${module.tokens} tokens</span></span>
+          <button onclick="openModule('${module.id}')">Abrir módulo</button>
+        `;
+        modulesList.appendChild(div);
+      });
+    });
+
+    function openModule(moduleId) {
+      alert("Aquí puedes abrir el módulo " + moduleId + " (funcionalidad pendiente).");
+    }
+
+    document.getElementById("backDashboard").onclick = () => {
+      window.location.href = "index.html";
+    };
+  </script>
 </body>
 </html>

@@ -121,29 +121,55 @@ if (document.getElementById("registerForm")) {
   });
 }
 
-/* ------------------ PROTECCIÓN DE RUTAS (index/dashboard) ------------------ */
+/* ------------------ PROTECCIÓN DE RUTAS (index/dashboard/course) ------------------ */
+/* ------------------ PROTECCIÓN DE RUTAS (index/dashboard) - FIX ------------------ */
+function getLoggedUser() {
+  const raw = localStorage.getItem("loggedIn");
+  if (!raw) return null;
+  try {
+    const obj = JSON.parse(raw);
+    // aseguramos que venga en formato { id, displayName }
+    return obj;
+  } catch (e) {
+    return null;
+  }
+}
+
 (function protectPages() {
   const protectedPages = ["index.html", "dashboard.html", "course.html"];
-  const currentPage = window.location.pathname.split("/").pop();
+  // Si la ruta es "/" (pop() -> "") tratamos como index.html
+  const rawPage = window.location.pathname.split("/").pop();
+  const currentPage = rawPage && rawPage.length > 0 ? rawPage : "index.html";
+
   if (protectedPages.includes(currentPage)) {
-    const logged = localStorage.getItem("loggedIn");
-    if (!logged) {
+    const userObj = getLoggedUser();
+    if (!userObj) {
+      // No hay sesión =>forzar login
       window.location.href = "login.html";
     } else {
-      try {
-        const li = JSON.parse(logged);
-        const userEl = document.getElementById("user-display");
-        if (userEl) userEl.innerText = li.displayName || li.id;
-      } catch (e) { /* ignore */ }
+      // Poner nombre del usuario en el header si existe el elemento
+      const userEl = document.getElementById("user-display");
+      if (userEl) userEl.innerText = userObj.displayName || userObj.id || "Usuario";
     }
   }
 })();
 
-/* ------------------ CERRAR SESIÓN (opcional) ------------------ */
-function logout() {
+
+/* ------------------ HEADER: mostrar usuario y cerrar sesión ------------------ */
+/* ------------------ CERRAR SESIÓN (opcional) - FIX ------------------ */
+window.logout = function() {
+  try {
+    // Aseguramos guardar progreso/datos antes de cerrar (si existe la función)
+    if (typeof saveData === "function") saveData();
+  } catch (e) { /* no crítico */ }
+
+  // Eliminamos la sesión y redirigimos
   localStorage.removeItem("loggedIn");
+  // Si usas otros flags para sesión (por ejemplo: "sessionActive"), elimínalos aquí también.
+  // localStorage.removeItem("sessionActive");
   window.location.href = "login.html";
-}
+};
+
 
 /* ------------------ STORAGE: progreso por curso por usuario ------------------ */
 function getCourseProgress() {
@@ -188,7 +214,6 @@ if (document.getElementById("courses-container")) {
   const container = document.getElementById("courses-container");
   container.innerHTML = "";
 
-  // window.courses proviene de courses.js
   (window.courses || []).forEach(course => {
     const card = document.createElement("div");
     card.className = "course-card";
@@ -204,7 +229,6 @@ if (document.getElementById("courses-container")) {
     container.appendChild(card);
   });
 
-  // Start buttons -> nueva pestaña con course.html?course=ID
   document.querySelectorAll(".start-btn").forEach(btn => {
     btn.addEventListener("click", (e) => {
       const courseId = e.currentTarget.getAttribute("data-course");
@@ -213,13 +237,13 @@ if (document.getElementById("courses-container")) {
   });
 }
 
-/* ------------------ FUNCIONES PARA ABRIR CURSO Y OBTENER USUARIO ------------------ */
+/* ------------------ FUNCIONES PARA ABRIR CURSO ------------------ */
 function openCourseInNewTab(courseId) {
   const url = `course.html?course=${encodeURIComponent(courseId)}`;
   window.open(url, "_blank");
 }
 
-/* ------------------ MODAL: info del curso (index.html) ------------------ */
+/* ------------------ MODAL: info del curso ------------------ */
 (function setupModal() {
   const modal = document.getElementById("courseModal");
   if (!modal) return;
@@ -240,7 +264,6 @@ function openCourseInNewTab(courseId) {
     modalTitle.innerText = course.title;
     modalIntro.innerText = course.intro;
 
-    // mostrar módulos (también marcar completados)
     modalModulesList.innerHTML = "";
     const user = getLoggedUserId();
     const allProgress = getCourseProgress();
@@ -253,7 +276,6 @@ function openCourseInNewTab(courseId) {
       modalModulesList.appendChild(li);
     });
 
-    // mostrar modal
     modal.setAttribute("aria-hidden", "false");
     document.body.style.overflow = "hidden";
     modalStartBtn.focus();
@@ -265,7 +287,6 @@ function openCourseInNewTab(courseId) {
     document.body.style.overflow = "";
   }
 
-  // Attach listeners
   modalCloseBtn?.addEventListener("click", closeCourseModal);
   modalCloseSecondary?.addEventListener("click", closeCourseModal);
   modal?.addEventListener("click", (e) => {
@@ -278,7 +299,6 @@ function openCourseInNewTab(courseId) {
     closeCourseModal();
   });
 
-  // Wire info-btns to modal (if exist in the DOM)
   document.querySelectorAll(".info-btn").forEach(btn => {
     btn.addEventListener("click", (e) => {
       e.preventDefault();
@@ -288,9 +308,8 @@ function openCourseInNewTab(courseId) {
   });
 })();
 
-/* ------------------ LÓGICA DE course.html (si estamos en esa página) ------------------ */
+/* ------------------ LÓGICA DE course.html ------------------ */
 if (window.location.pathname.split("/").pop() === "course.html") {
-  // Aseguramos que courses.js ya se cargó (window.courses)
   const params = new URLSearchParams(window.location.search);
   const courseId = params.get("course");
   const course = (window.courses || []).find(c => c.id === courseId);
@@ -298,7 +317,6 @@ if (window.location.pathname.split("/").pop() === "course.html") {
   if (!course) {
     document.body.innerHTML = "<p>Curso no encontrado.</p>";
   } else {
-    // render header info
     const titleEl = document.getElementById("course-title");
     const introEl = document.getElementById("course-intro");
     const balanceEl = document.getElementById("user-balance");
@@ -325,13 +343,12 @@ if (window.location.pathname.split("/").pop() === "course.html") {
           <div style="font-size:0.9rem; color:#6B7280;">Recompensa: <span class="token-reward">${mod.tokens} tokens</span></div>
         </div>
         <div>
-          <button class="complete-btn" data-mod="${mod.id}" ${isDone ? "disabled" : ""}>${isDone ? "Completado" : "Completar módulo"}</button>
+          <button class="complete-btn" data-mod="${mod.id}" ${isDone ? "disabled" : ""}>${isDone ? "Completo" : "Completar módulo"}</button>
         </div>
       `;
       modulesList.appendChild(div);
     });
 
-    // listener: completar módulos
     modulesList.addEventListener("click", (e) => {
       if (e.target.classList.contains("complete-btn")) {
         const modId = e.target.getAttribute("data-mod");
@@ -342,9 +359,12 @@ if (window.location.pathname.split("/").pop() === "course.html") {
         const balEl = document.getElementById("user-balance");
         if (balEl) balEl.innerText = localStorage.getItem("balance") || "0";
       }
+      if (e.target.classList.contains("ai-open-btn")) {
+        const modId = e.target.getAttribute("data-mod");
+        openAITutorForModule(courseId, modId);
+      }
     });
 
-    // Back button: si la ventana fue abierta por otra (opener) cerramos, si no redirigimos
     if (backBtn) {
       backBtn.addEventListener("click", () => {
         if (window.opener && !window.opener.closed) {
@@ -358,9 +378,7 @@ if (window.location.pathname.split("/").pop() === "course.html") {
 }
 
 /* ------------------ INDEX: token / reto / dashboard sync ------------------ */
-/* (actualiza elementos si existen en index.html o dashboard.html) */
 (function initUIValues() {
-  // index balance / earn button
   const balanceEl = document.getElementById("balance");
   const earnBtn = document.getElementById("earnBtn");
   if (balanceEl) balanceEl.innerText = `${balance} tokens`;
@@ -382,7 +400,6 @@ if (window.location.pathname.split("/").pop() === "course.html") {
     });
   }
 
-  // dashboard view
   const progressFill = document.getElementById("progress-fill");
   const progressText = document.getElementById("progress-text");
   const list = document.getElementById("achievement-list");
@@ -397,3 +414,29 @@ if (window.location.pathname.split("/").pop() === "course.html") {
     });
   }
 })();
+
+document.addEventListener("DOMContentLoaded", () => {
+  const userDisplay = document.getElementById("user-display");
+  const logoutBtn = document.getElementById("btn-logout");
+
+  const logged = localStorage.getItem("loggedIn");
+  let userName = "Invitado";
+
+  if (logged) {
+    try {
+      const userObj = JSON.parse(logged);
+      userName = userObj.displayName || userObj.id || "Invitado";
+    } catch (e) {
+      userName = logged;
+    }
+  }
+
+  if (userDisplay) userDisplay.innerText = userName;
+
+  if (logoutBtn) {
+    logoutBtn.addEventListener("click", () => {
+      localStorage.removeItem("loggedIn");
+      window.location.href = "login.html";
+    });
+  }
+});
