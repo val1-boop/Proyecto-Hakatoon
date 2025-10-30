@@ -26,7 +26,7 @@
     <!-- Sección principal -->
     <section id="token-section" class="centered-card">
       <h2>Tu progreso</h2>
-      <p>Balance actual: <strong id="balance">0 tokens</strong></p>
+      <p>Balance actual: <strong id="balance"></strong></p>
       <p>Sigue aprendiendo para ganar más recompensas 🪙</p>
     </section>
 
@@ -121,6 +121,7 @@
         }
     });
 </script>
+
 <script>
     document.getElementById('logout-btn').addEventListener('click', function() {
         // Guardar progreso
@@ -132,6 +133,27 @@
         // Redirigir
         window.location.href = 'login.html';
     });
+</script>
+<script>
+    // FUNCIÓN PARA ACTUALIZAR Y MOSTRAR LOS TOKENS
+    function updateTokenDisplay() {
+        const balance = localStorage.getItem('balance') || '0';
+        const balanceElement = document.getElementById('balance');
+        if (balanceElement) {
+            balanceElement.textContent = `${balance} tokens`;
+        }
+    }
+
+    // ACTUALIZAR TOKENS CUANDO LA PÁGINA CARGA
+    document.addEventListener('DOMContentLoaded', function() {
+        updateTokenDisplay();
+        
+        // También actualizar cuando la página gane foco (vuelva de otra pestaña)
+        window.addEventListener('focus', updateTokenDisplay);
+    });
+
+    // ACTUALIZAR TOKENS CADA 2 SEGUNDOS (por si acaso)
+    setInterval(updateTokenDisplay, 2000);
 </script>
 </body>
 </html>

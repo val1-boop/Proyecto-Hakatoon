@@ -152,6 +152,8 @@ function askAI() {
     document.getElementById('ai-question').value = '';
 }
 
+// REEMPLAZAR la función completeModule actual por esta:
+
 function completeModule() {
     if (!currentModule || !currentCourse) return;
     
@@ -161,9 +163,19 @@ function completeModule() {
         return;
     }
     
-    // Verificar si ya completó el quiz (opcional)
-    const questions = currentModule.quiz;
-    if (questions && questions.length > 0) {
+    // Verificar si ya completó este módulo
+    const progressObj = getCourseProgress();
+    const userProgress = progressObj[user] || {};
+    const courseProgress = userProgress[currentCourse.id] || [];
+    
+    if (courseProgress.includes(currentModule.id)) {
+        alert('Ya completaste este módulo anteriormente.');
+        return;
+    }
+    
+    // Verificar quiz (opcional)
+    const questions = currentModule.quiz || [];
+    if (questions.length > 0) {
         const selectedOptions = userAnswers.filter(answer => answer !== -1);
         if (selectedOptions.length < questions.length) {
             if (!confirm('No has completado el quiz. ¿Estás seguro de que quieres completar el módulo?')) {
@@ -172,16 +184,49 @@ function completeModule() {
         }
     }
     
-    // Completar módulo y dar recompensa
-    completeModuleForUser(currentCourse.id, currentModule.id, currentModule.tokens);
+    // ACTUALIZAR BALANCE CORRECTAMENTE
+    let currentBalance = parseInt(localStorage.getItem('balance') || '0');
+    let newBalance = currentBalance + currentModule.tokens;
     
+    // Guardar en localStorage
+    localStorage.setItem('balance', newBalance.toString());
+    
+    // Actualizar progreso del curso
+    if (!userProgress[currentCourse.id]) {
+        userProgress[currentCourse.id] = [];
+    }
+    userProgress[currentCourse.id].push(currentModule.id);
+    progressObj[user] = userProgress;
+    localStorage.setItem('courseProgress', JSON.stringify(progressObj));
+    
+    // Actualizar progreso general
+    let currentProgress = parseInt(localStorage.getItem('progress') || '0');
+    let newProgress = Math.min(100, currentProgress + 10);
+    localStorage.setItem('progress', newProgress.toString());
+    
+    // Actualizar logros
+    let achievements = JSON.parse(localStorage.getItem('achievements') || '[]');
+    const newAchievement = `✅ Completado: ${currentModule.title}`;
+    if (!achievements.includes(newAchievement)) {
+        achievements.push(newAchievement);
+        localStorage.setItem('achievements', JSON.stringify(achievements));
+    }
+    
+    // Actualizar UI inmediatamente
+    updateBalance();
+    
+    // Deshabilitar botón
     document.getElementById('complete-btn').innerHTML = '✅ Módulo completado';
     document.getElementById('complete-btn').disabled = true;
     document.getElementById('complete-btn').style.background = '#6B7280';
     
-    updateBalance();
-    
+    // Mensaje de éxito
     alert(`🎉 ¡Felicidades! Has completado "${currentModule.title}" y ganado ${currentModule.tokens} tokens!`);
+    
+    // FORZAR ACTUALIZACIÓN en páginas abiertas
+    if (window.opener && !window.opener.closed) {
+        window.opener.location.reload();
+    }
 }
 
 function updateBalance() {
