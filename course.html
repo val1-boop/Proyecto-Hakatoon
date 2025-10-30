@@ -79,5 +79,26 @@
       window.location.href = "index.html";
     };
   </script>
+  <script>
+    // FUNCIÓN PARA ACTUALIZAR TOKENS EN COURSE.HTML
+    function updateCourseBalance() {
+        const balance = localStorage.getItem('balance') || '0';
+        const balanceElement = document.getElementById('user-balance');
+        if (balanceElement) {
+            balanceElement.textContent = balance;
+        }
+    }
+
+    // ACTUALIZAR AL CARGAR LA PÁGINA
+    document.addEventListener('DOMContentLoaded', function() {
+        updateCourseBalance();
+        
+        // Actualizar cuando la página gane foco
+        window.addEventListener('focus', updateCourseBalance);
+    });
+
+    // ACTUALIZAR CADA 2 SEGUNDOS
+    setInterval(updateCourseBalance, 2000);
+</script>
 </body>
 </html>
