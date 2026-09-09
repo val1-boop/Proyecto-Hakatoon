@@ -167,12 +167,6 @@ window.logout = function() {
   window.location.href = "login.html";
 };
 
-// Ejecutar cuando el DOM esté listo
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', setupLogout);
-} else {
-    setupLogout();
-}
 
 
 /* ------------------ STORAGE: progreso por curso por usuario ------------------ */
