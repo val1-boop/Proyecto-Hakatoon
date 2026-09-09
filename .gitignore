@@ -1,0 +1,25 @@
+# Editores / IDEs
+.idea/
+*.iml
+.vscode/
+out/
+
+# Python
+__pycache__/
+*.py[cod]
+venv/
+.venv/
+
+# Node
+node_modules/
+
+# Sistema operativo
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# Datos locales: NO subir usuarios registrados
+backend/data/users.json
+
+# Variables de entorno
+.env
